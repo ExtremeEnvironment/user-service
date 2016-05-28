@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ExtremeEnvironment/user-service.svg?branch=master)](https://travis-ci.org/ExtremeEnvironment/user-service)
+
 # UserService
 
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
