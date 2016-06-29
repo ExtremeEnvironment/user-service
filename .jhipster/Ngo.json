@@ -6,6 +6,13 @@
             "relationshipType": "many-to-many",
             "otherEntityField": "id",
             "ownerSide": true
+        },
+        {
+            "relationshipName": "admins",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true
         }
     ],
     "fields": [

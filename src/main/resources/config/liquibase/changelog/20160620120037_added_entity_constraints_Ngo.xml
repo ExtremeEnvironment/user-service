@@ -19,5 +19,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
         
+        <addForeignKeyConstraint baseColumnNames="ngos_id"
+                                 baseTableName="ngo_admins"
+                                 constraintName="fk_ngo_admins_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ngo"/>
+        <addForeignKeyConstraint baseColumnNames="admins_id"
+                                 baseTableName="ngo_admins"
+                                 constraintName="fk_ngo_admins_ngo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+        
     </changeSet>
 </databaseChangeLog>

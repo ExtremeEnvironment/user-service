@@ -39,5 +39,16 @@
 
         <addPrimaryKey columnNames="ngos_id, users_id" tableName="ngo_user"/>
         
+        <createTable tableName="ngo_admins">
+            <column name="admins_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ngos_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="ngos_id, admins_id" tableName="ngo_admins"/>
+        
     </changeSet>
 </databaseChangeLog>
