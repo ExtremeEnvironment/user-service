@@ -27,10 +27,10 @@ import java.util.Optional;
 public class NgoResource {
 
     private final Logger log = LoggerFactory.getLogger(NgoResource.class);
-        
+
     @Inject
     private NgoRepository ngoRepository;
-    
+
     /**
      * POST  /ngos : Create a new ngo.
      *

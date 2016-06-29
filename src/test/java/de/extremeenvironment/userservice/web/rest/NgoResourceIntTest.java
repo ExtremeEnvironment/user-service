@@ -81,9 +81,9 @@ public class NgoResourceIntTest {
         // Create the Ngo
 
         restNgoMockMvc.perform(post("/api/ngos")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(ngo)))
-                .andExpect(status().isCreated());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ngo)))
+            .andExpect(status().isCreated());
 
         // Validate the Ngo in the database
         List<Ngo> ngos = ngoRepository.findAll();
@@ -102,9 +102,9 @@ public class NgoResourceIntTest {
         // Create the Ngo, which fails.
 
         restNgoMockMvc.perform(post("/api/ngos")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(ngo)))
-                .andExpect(status().isBadRequest());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ngo)))
+            .andExpect(status().isBadRequest());
 
         List<Ngo> ngos = ngoRepository.findAll();
         assertThat(ngos).hasSize(databaseSizeBeforeTest);
@@ -118,10 +118,10 @@ public class NgoResourceIntTest {
 
         // Get all the ngos
         restNgoMockMvc.perform(get("/api/ngos?sort=id,desc"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(ngo.getId().intValue())))
-                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ngo.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
     @Test
@@ -143,7 +143,7 @@ public class NgoResourceIntTest {
     public void getNonExistingNgo() throws Exception {
         // Get the ngo
         restNgoMockMvc.perform(get("/api/ngos/{id}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -159,9 +159,9 @@ public class NgoResourceIntTest {
         updatedNgo.setName(UPDATED_NAME);
 
         restNgoMockMvc.perform(put("/api/ngos")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(updatedNgo)))
-                .andExpect(status().isOk());
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedNgo)))
+            .andExpect(status().isOk());
 
         // Validate the Ngo in the database
         List<Ngo> ngos = ngoRepository.findAll();
@@ -179,8 +179,8 @@ public class NgoResourceIntTest {
 
         // Get the ngo
         restNgoMockMvc.perform(delete("/api/ngos/{id}", ngo.getId())
-                .accept(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk());
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
 
         // Validate the database is empty
         List<Ngo> ngos = ngoRepository.findAll();
