@@ -93,7 +93,8 @@ public class UaaConfiguration extends AuthorizationServerConfigurerAdapter {
             .authorizedGrantTypes("implicit","refresh_token", "password", "authorization_code")
             .and()
             .withClient("internal")
-            .secret("internal") //only for testing!!! @TODO config or details service..
+            .secret("internal")
+            .scopes("internal.read", "internal.write")
             .autoApprove(true)
             .authorizedGrantTypes("client_credentials");
     }

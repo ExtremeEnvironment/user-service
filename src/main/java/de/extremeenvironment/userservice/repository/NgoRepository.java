@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface NgoRepository extends JpaRepository<Ngo,Long> {
 
-    @Query("select distinct ngo from Ngo ngo left join fetch ngo.users")
+    @Query("select distinct ngo from Ngo ngo left join fetch ngo.users left join fetch ngo.admins")
     List<Ngo> findAllWithEagerRelationships();
 
-    @Query("select ngo from Ngo ngo left join fetch ngo.users where ngo.id =:id")
+    @Query("select ngo from Ngo ngo left join fetch ngo.users left join fetch ngo.admins where ngo.id =:id")
     Ngo findOneWithEagerRelationships(@Param("id") Long id);
 
 }

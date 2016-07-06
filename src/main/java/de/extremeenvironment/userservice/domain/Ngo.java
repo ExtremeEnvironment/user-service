@@ -31,6 +31,12 @@ public class Ngo implements Serializable {
                inverseJoinColumns = @JoinColumn(name="users_id", referencedColumnName="ID"))
     private Set<User> users = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "ngo_admins",
+               joinColumns = @JoinColumn(name="ngos_id", referencedColumnName="ID"),
+               inverseJoinColumns = @JoinColumn(name="admins_id", referencedColumnName="ID"))
+    private Set<User> admins = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -53,6 +59,14 @@ public class Ngo implements Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<User> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(Set<User> users) {
+        this.admins = users;
     }
 
     @Override
