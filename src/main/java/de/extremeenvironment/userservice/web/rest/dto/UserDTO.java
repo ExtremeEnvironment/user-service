@@ -35,16 +35,31 @@ public class UserDTO {
     @Size(min = 2, max = 5)
     private String langKey;
 
+    private long id;
+
     private Set<String> authorities;
 
     public UserDTO() {
     }
 
     public UserDTO(User user) {
-        this(user.getLogin(), user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getLangKey(),
-            user.getAuthorities().stream().map(Authority::getName)
+        this(user.getId(),user.getLogin(), user.getFirstName(),
+            user.getLastName(), user.getEmail(), user.getActivated(),
+            user.getLangKey(), user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()));
+    }
+
+    public UserDTO(long id, String login, String firstName, String lastName,
+        String email, boolean activated, String langKey, Set<String> authorities) {
+
+        this.id = id;
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.activated = activated;
+        this.langKey = langKey;
+        this.authorities = authorities;
     }
 
     public UserDTO(String login, String firstName, String lastName,
@@ -85,6 +100,14 @@ public class UserDTO {
 
     public Set<String> getAuthorities() {
         return authorities;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override

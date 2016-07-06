@@ -42,7 +42,7 @@ public class ManagedUserDTO extends UserDTO {
 
     public ManagedUserDTO(Long id, String login, String password, String firstName, String lastName,
                           String email, boolean activated, String langKey, Set<String> authorities , ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate ) {
-        super(login, firstName, lastName, email, activated, langKey, authorities);
+        super(id, login, firstName, lastName, email, activated, langKey, authorities);
         this.id = id;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;
@@ -50,9 +50,15 @@ public class ManagedUserDTO extends UserDTO {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public ManagedUserDTO(String login, String password, String firstName, String lastName,
+                          String email, boolean activated, String langKey, Set<String> authorities , ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate ) {
+        super(login, firstName, lastName, email, activated, langKey, authorities);
+        this.createdDate = createdDate;
+        this.lastModifiedBy = lastModifiedBy;
+        this.lastModifiedDate = lastModifiedDate;
+        this.password = password;
     }
+
 
     public void setId(Long id) {
         this.id = id;
