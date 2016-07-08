@@ -27,15 +27,48 @@ public class Ngo implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "ngo_user",
-               joinColumns = @JoinColumn(name="ngos_id", referencedColumnName="ID"),
-               inverseJoinColumns = @JoinColumn(name="users_id", referencedColumnName="ID"))
+        joinColumns = @JoinColumn(name = "ngos_id", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "users_id", referencedColumnName = "ID"))
     private Set<User> users = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "ngo_admins",
-               joinColumns = @JoinColumn(name="ngos_id", referencedColumnName="ID"),
-               inverseJoinColumns = @JoinColumn(name="admins_id", referencedColumnName="ID"))
+        joinColumns = @JoinColumn(name = "ngos_id", referencedColumnName = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "admins_id", referencedColumnName = "ID"))
     private Set<User> admins = new HashSet<>();
+
+    @Column(name = "email", nullable = true)
+    private String email;
+
+    @Column(name = "website", nullable = true)
+    private String website;
+
+    @Column(name = "telephone", nullable = true)
+    private String telephone;
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Long getId() {
         return id;
@@ -78,7 +111,7 @@ public class Ngo implements Serializable {
             return false;
         }
         Ngo ngo = (Ngo) o;
-        if(ngo.id == null || id == null) {
+        if (ngo.id == null || id == null) {
             return false;
         }
         return Objects.equals(id, ngo.id);

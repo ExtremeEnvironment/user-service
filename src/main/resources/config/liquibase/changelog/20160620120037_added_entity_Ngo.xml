@@ -24,10 +24,19 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+            <column name="website" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="telephone" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="ngo_user">
             <column name="users_id" type="bigint">
                 <constraints nullable="false"/>
@@ -38,7 +47,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="ngos_id, users_id" tableName="ngo_user"/>
-        
+
         <createTable tableName="ngo_admins">
             <column name="admins_id" type="bigint">
                 <constraints nullable="false"/>
@@ -49,6 +58,6 @@
         </createTable>
 
         <addPrimaryKey columnNames="ngos_id, admins_id" tableName="ngo_admins"/>
-        
+
     </changeSet>
 </databaseChangeLog>
