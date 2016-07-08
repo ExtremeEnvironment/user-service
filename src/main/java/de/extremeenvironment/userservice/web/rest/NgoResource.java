@@ -162,6 +162,7 @@ public class NgoResource {
         if(user.get()!=null) {
             Ngo ngo = ngoRepository.findOne(ngoId);
             ngo.getUsers().add(user.get());
+            ngoRepository.saveAndFlush(ngo);
             return Optional.ofNullable(ngo)
                 .map(result -> new ResponseEntity<>(
                     result,
@@ -194,6 +195,7 @@ public class NgoResource {
             System.out.println(user);
             Ngo ngo = ngoRepository.findOne(ngoId);
             ngo.getUsers().remove(user.get());
+            ngoRepository.saveAndFlush(ngo);
             return Optional.ofNullable(ngo)
                 .map(result -> new ResponseEntity<>(
                     result,
