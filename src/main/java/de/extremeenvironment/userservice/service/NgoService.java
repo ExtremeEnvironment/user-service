@@ -24,12 +24,14 @@ public class NgoService {
         ngo.setEmail("wwf@tier.de");
         ngo.setTelephone("1234566");
         ngo.setWebsite("www.wwf.de");
+        ngoRepository.saveAndFlush(ngo);
 
         Ngo ngo1 = new Ngo();
         ngo1.setName("UNICEF");
         ngo1.setEmail("unicef@unicef.de");
         ngo1.setTelephone("123444566");
         ngo1.setWebsite("www.unicef.de");
+        ngoRepository.saveAndFlush(ngo1);
 
     }
 }
