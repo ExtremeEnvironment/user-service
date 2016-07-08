@@ -81,6 +81,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<Authority> authorities = new HashSet<>();
 
+    @ManyToMany(mappedBy="users")
+    private Set<Ngo> ngo_user = new HashSet<>();
+
+    @ManyToMany(mappedBy = "admins")
+    private Set<Ngo> ngo_admin = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -176,6 +182,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Ngo> getNgo_user() {
+        return ngo_user;
+    }
+
+    public void setNgo_user(Set<Ngo> ngo_user) {
+        this.ngo_user = ngo_user;
+    }
+
+    public Set<Ngo> getNgo_admin() {
+        return ngo_admin;
+    }
+
+    public void setNgo_admin(Set<Ngo> ngo_admin) {
+        this.ngo_admin = ngo_admin;
     }
 
     @Override
