@@ -4,6 +4,7 @@ import de.extremeenvironment.userservice.UserServiceApp;
 import de.extremeenvironment.userservice.domain.Ngo;
 import de.extremeenvironment.userservice.repository.NgoRepository;
 
+import de.extremeenvironment.userservice.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +49,9 @@ public class NgoResourceIntTest {
     private NgoRepository ngoRepository;
 
     @Inject
+    private UserRepository userRepository;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -60,7 +64,7 @@ public class NgoResourceIntTest {
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        NgoResource ngoResource = new NgoResource();
+        NgoResource ngoResource = new NgoResource(ngoRepository, userRepository);
         ReflectionTestUtils.setField(ngoResource, "ngoRepository", ngoRepository);
         this.restNgoMockMvc = MockMvcBuilders.standaloneSetup(ngoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
