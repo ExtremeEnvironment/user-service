@@ -132,7 +132,7 @@ dependencies {
     compile ("com.ryantenney.metrics:metrics-spring:${metrics_spring_version}") {
         exclude(module: 'metrics-core')
         exclude(module: 'metrics-healthchecks')
-    } 
+    }
     compile("com.zaxxer:HikariCP:${HikariCP_version}") {
         exclude(module: 'tools')
     }
@@ -142,7 +142,7 @@ dependencies {
     compile "javax.transaction:javax.transaction-api"
     compile "org.apache.geronimo.javamail:geronimo-javamail_1.4_mail:${geronimo_javamail_1_4_mail_version}"
     compile "org.hibernate:hibernate-core:${hibernate_entitymanager_version}"
-    
+
     compile "org.hibernate:hibernate-envers"
     compile "org.hibernate:hibernate-validator"
     compile ("org.liquibase:liquibase-core:${liquibase_core_version}") {
@@ -180,7 +180,7 @@ dependencies {
     compile("io.springfox:springfox-swagger2:${springfox_version}"){
         exclude module: 'mapstruct'
     }
-    
+
     compile "org.postgresql:postgresql"
     compile "com.h2database:h2"
     compile "fr.ippon.spark.metrics:metrics-spark-reporter:${metrics_spark_reporter_version}"
@@ -193,10 +193,12 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "com.mattbertolini:liquibase-slf4j:${liquibase_slf4j_version}"
     testCompile "org.hamcrest:hamcrest-library"
-    
-    
+
+
     optional "org.springframework.boot:spring-boot-configuration-processor:${spring_boot_version}"
     testCompile 'io.springfox:springfox-staticdocs:2.4.0'
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.0.RELEASE'
+    testCompile 'org.springframework.restdocs:spring-restdocs-core:1.1.0.RELEASE'
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
 }
 
