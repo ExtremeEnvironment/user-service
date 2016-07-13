@@ -270,7 +270,7 @@ public class AccountResourceIntTest {
         );
 
         // Duplicate login, different e-mail
-        ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
+        ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getLogin(), validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
             "alicejr@example.com", true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
 
         // Good user
@@ -310,7 +310,7 @@ public class AccountResourceIntTest {
         );
 
         // Duplicate e-mail, different login
-        ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
+        ManagedUserDTO duplicatedUser = new ManagedUserDTO("johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
             validUser.getEmail(), true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
 
         // Good user
