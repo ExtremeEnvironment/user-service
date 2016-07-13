@@ -64,6 +64,11 @@ public class ManagedUserDTO extends UserDTO {
         this.id = id;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
     public ZonedDateTime getCreatedDate() {
         return createdDate;
     }

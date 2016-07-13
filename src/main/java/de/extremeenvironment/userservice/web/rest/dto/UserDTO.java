@@ -102,7 +102,7 @@ public class UserDTO {
         return authorities;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

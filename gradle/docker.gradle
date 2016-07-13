@@ -1,6 +1,10 @@
-import org.apache.tools.ant.taskdefs.condition.Os
+apply plugin: 'docker'
 
-task buildDocker(type: Exec) {
+task buildDocker(type: Docker) {
+    registry = 'gcr.io'
+    applicationName = 'extreme-environments/user-service'
+    tagVersion = 'latest'
+    dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
         copy {
             from "src/main/docker/"
@@ -13,9 +17,5 @@ task buildDocker(type: Exec) {
             include "*.war*"
         }
     }
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        commandLine 'cmd', '/c', 'docker', 'build', '-f', 'build/docker/Dockerfile', '-t', 'userservice', 'build/docker/'
-    } else {
-        commandLine 'docker', 'build', '-f', 'build/docker/Dockerfile', '-t', 'userservice', 'build/docker/'
-    }
+
 }

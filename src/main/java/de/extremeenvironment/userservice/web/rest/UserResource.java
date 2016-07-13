@@ -137,6 +137,8 @@ public class UserResource {
         log.debug("REST request to update User : {}", managedUserDTO);
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
+            Long id1 = existingUser.get().getId();
+            Long id2 = managedUserDTO.getId();
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", "E-mail already in use")).body(null);
         }
         existingUser = userRepository.findOneByLogin(managedUserDTO.getLogin().toLowerCase());
