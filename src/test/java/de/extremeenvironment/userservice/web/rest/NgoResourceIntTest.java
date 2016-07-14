@@ -2,6 +2,7 @@ package de.extremeenvironment.userservice.web.rest;
 
 import de.extremeenvironment.userservice.UserServiceApp;
 import de.extremeenvironment.userservice.domain.Ngo;
+import de.extremeenvironment.userservice.domain.User;
 import de.extremeenvironment.userservice.repository.NgoRepository;
 
 import de.extremeenvironment.userservice.repository.UserRepository;
@@ -189,5 +190,48 @@ public class NgoResourceIntTest {
         // Validate the database is empty
         List<Ngo> ngos = ngoRepository.findAll();
         assertThat(ngos).hasSize(databaseSizeBeforeDelete - 1);
+    }
+    @Test
+    @Transactional
+    public void insertUser() throws Exception {
+        // Initialize the database
+        ngoRepository.saveAndFlush(ngo);
+        User user= userRepository.findOne(3L);
+
+        int dataSize= ngo.getUsers().size();
+
+        // Get the ngo
+        restNgoMockMvc.perform(post("/api/ngos/{ngoId}/{userId}", ngo.getId(),user.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+
+        assertThat(ngo.getUsers()).contains(user);
+        assertThat(ngo.getUsers().size()).isEqualTo(dataSize+1);
+
+
+    }
+
+    @Test
+    @Transactional
+    public void removeUser() throws Exception {
+        // Initialize the database
+        ngoRepository.saveAndFlush(ngo);
+        User user= userRepository.findOne(3L);
+        ngo.getUsers().add(user);
+        ngoRepository.saveAndFlush(ngo);
+        assertThat(ngo.getUsers().contains(user));
+
+        int dataSize= ngo.getUsers().size();
+
+
+        // Get the ngo
+        restNgoMockMvc.perform(delete("/api/ngos/{ngoId}/{userId}", ngo.getId(),user.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        assertThat(ngo.getUsers().size()).isEqualTo(dataSize-1);
+        assertThat(ngo.getUsers()).doesNotContain(user);
+
     }
 }
