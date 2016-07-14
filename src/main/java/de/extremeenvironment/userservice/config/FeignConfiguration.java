@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("!test")
-@EnableFeignClients(basePackages = "de.extremeenvironment.disasterservice.client")
+@EnableFeignClients(basePackages = "de.extremeenvironment.userservice.client")
 public class FeignConfiguration {
 }
