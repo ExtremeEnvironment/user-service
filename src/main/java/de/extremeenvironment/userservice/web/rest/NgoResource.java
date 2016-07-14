@@ -1,6 +1,8 @@
 package de.extremeenvironment.userservice.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import de.extremeenvironment.userservice.client.Conversation;
+import de.extremeenvironment.userservice.client.MessageClient;
 import de.extremeenvironment.userservice.domain.Ngo;
 import de.extremeenvironment.userservice.domain.User;
 import de.extremeenvironment.userservice.repository.NgoRepository;
@@ -31,17 +33,17 @@ public class NgoResource {
 
     private final Logger log = LoggerFactory.getLogger(NgoResource.class);
 
-    @Inject
     private NgoRepository ngoRepository;
 
-    @Inject
     private UserRepository userRepository;
 
+    private MessageClient messageClient;
+
     @Autowired
-    public NgoResource(NgoRepository ngoRepository, UserRepository userRepository) {
+    public NgoResource(NgoRepository ngoRepository, UserRepository userRepository, MessageClient messageClient) {
         this.ngoRepository=ngoRepository;
         this.userRepository=userRepository;
-
+        this.messageClient = messageClient;
     }
 
     /**
@@ -61,6 +63,22 @@ public class NgoResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("ngo", "idexists", "A new ngo cannot already have an ID")).body(null);
         }
         Ngo result = ngoRepository.save(ngo);
+
+        try {
+            Conversation ngoConversation = messageClient.addConversation(
+                new Conversation(ngo.getName() + " Chat")
+            );
+
+            result.setConversationId(ngoConversation.getId());
+
+            if (result.getUsers().size() > 0) {
+                result.getUsers().forEach(user -> messageClient.addMember(user, ngoConversation.getId()));
+            }
+        } catch (Exception ignored) {
+
+        }
+
+
         return ResponseEntity.created(new URI("/api/ngos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("ngo", result.getId().toString()))
             .body(result);
@@ -156,10 +174,11 @@ public class NgoResource {
 
         System.out.println(userRepository==null);
         Optional<User> user= userRepository.findOneById(userId);
-        if(user.get()!=null) {
+        if(user.isPresent()) {
             Ngo ngo = ngoRepository.findOne(ngoId);
             ngo.getUsers().add(user.get());
             ngoRepository.saveAndFlush(ngo);
+            messageClient.addMember(user.get(), ngo.getConversationId());
             return Optional.ofNullable(ngo)
                 .map(result -> new ResponseEntity<>(
                     result,

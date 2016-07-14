@@ -25,13 +25,16 @@ public class Ngo implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany
+    @Column
+    private Long conversationId;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ngo_user",
                joinColumns = @JoinColumn(name="ngos_id", referencedColumnName="ID"),
                inverseJoinColumns = @JoinColumn(name="users_id", referencedColumnName="ID"))
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ngo_admins",
                joinColumns = @JoinColumn(name="ngos_id", referencedColumnName="ID"),
                inverseJoinColumns = @JoinColumn(name="admins_id", referencedColumnName="ID"))
@@ -43,6 +46,14 @@ public class Ngo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(Long conversationId) {
+        this.conversationId = conversationId;
     }
 
     public String getName() {

@@ -1,6 +1,7 @@
 package de.extremeenvironment.userservice.web.rest;
 
 import de.extremeenvironment.userservice.UserServiceApp;
+import de.extremeenvironment.userservice.client.MessageClient;
 import de.extremeenvironment.userservice.domain.Ngo;
 import de.extremeenvironment.userservice.domain.User;
 import de.extremeenvironment.userservice.repository.NgoRepository;
@@ -13,6 +14,7 @@ import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -22,6 +24,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -39,12 +42,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = UserServiceApp.class)
-@WebAppConfiguration
-@IntegrationTest
+@WebIntegrationTest({
+    "spring.profiles.active:test",
+    "server.port:0"
+})
 public class NgoResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAA";
     private static final String UPDATED_NAME = "BBBBB";
+
+    @Inject
+    private WebApplicationContext context;
+
 
     @Inject
     private NgoRepository ngoRepository;
@@ -52,6 +61,8 @@ public class NgoResourceIntTest {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private MessageClient messageClient;
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -65,11 +76,7 @@ public class NgoResourceIntTest {
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        NgoResource ngoResource = new NgoResource(ngoRepository, userRepository);
-      //  ReflectionTestUtils.setField(ngoResource, "ngoRepository", ngoRepository);
-        this.restNgoMockMvc = MockMvcBuilders.standaloneSetup(ngoResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setMessageConverters(jacksonMessageConverter).build();
+        this.restNgoMockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Before

@@ -152,7 +152,13 @@ public class JHipsterProperties {
 
     public static class Security {
 
+        private final ClientAuthorization clientAuthorization = new ClientAuthorization();
+
         private final Authentication authentication = new Authentication();
+
+        public ClientAuthorization getClientAuthorization() {
+            return clientAuthorization;
+        }
 
         public Authentication getAuthentication() {
             return authentication;
@@ -196,6 +202,49 @@ public class JHipsterProperties {
                 public void setTokenValidityInSecondsForRememberMe(long tokenValidityInSecondsForRememberMe) {
                     this.tokenValidityInSecondsForRememberMe = tokenValidityInSecondsForRememberMe;
                 }
+            }
+        }
+
+        public static class ClientAuthorization {
+
+            private String clientId;
+
+            private String clientSecret;
+
+            private String tokenUrl;
+
+            private String tokenServiceId;
+
+            public String getClientId() {
+                return clientId;
+            }
+
+            public void setClientId(String clientId) {
+                this.clientId = clientId;
+            }
+
+            public String getClientSecret() {
+                return clientSecret;
+            }
+
+            public void setClientSecret(String clientSecret) {
+                this.clientSecret = clientSecret;
+            }
+
+            public String getTokenUrl() {
+                return tokenUrl;
+            }
+
+            public void setTokenUrl(String tokenUrl) {
+                this.tokenUrl = tokenUrl;
+            }
+
+            public String getTokenServiceId() {
+                return tokenServiceId;
+            }
+
+            public void setTokenServiceId(String tokenServiceId) {
+                this.tokenServiceId = tokenServiceId;
             }
         }
     }
@@ -489,10 +538,10 @@ public class JHipsterProperties {
         public String[] getDisplayOnActiveProfiles() {
             return displayOnActiveProfiles;
         }
-        
+
         public void setDisplayOnActiveProfiles(String[] displayOnActiveProfiles) {
             this.displayOnActiveProfiles = displayOnActiveProfiles;
         }
-    }  
+    }
 
 }

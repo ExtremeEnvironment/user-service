@@ -9,4 +9,5 @@
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20160620120037_added_entity_constraints_Ngo.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="classpath:config/liquibase/changelog/20160714132900_changed_entity_Ngo.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

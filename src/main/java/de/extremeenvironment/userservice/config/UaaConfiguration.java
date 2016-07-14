@@ -1,13 +1,17 @@
 package de.extremeenvironment.userservice.config;
 
 import de.extremeenvironment.userservice.security.AuthoritiesConstants;
+import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -18,9 +22,11 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableAuthorizationServer
@@ -31,6 +37,9 @@ public class UaaConfiguration extends AuthorizationServerConfigurerAdapter {
 
         @Inject
         TokenStore tokenStore;
+
+        @Inject
+        private LoadBalancedResourceDetails loadBalancedResourceDetails;
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
@@ -76,7 +85,13 @@ public class UaaConfiguration extends AuthorizationServerConfigurerAdapter {
 
         @Override
         public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-            resources.resourceId("jhipster-uaa").tokenStore(tokenStore);
+            resources.resourceId("userservice").tokenStore(tokenStore);
+        }
+
+
+        @Bean
+        public RequestInterceptor getOAuth2RequestInterceptor() throws IOException {
+            return new OAuth2FeignRequestInterceptor(new DefaultOAuth2ClientContext(), loadBalancedResourceDetails);
         }
     }
 
@@ -126,10 +141,22 @@ public class UaaConfiguration extends AuthorizationServerConfigurerAdapter {
      *
      * @return an access token converter configured with JHipsters secret key
      */
+
+
     @Bean
     public JwtAccessTokenConverter jwtTokenEnhancer() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(jHipsterProperties.getSecurity().getAuthentication().getJwt().getSecret());
         return converter;
     }
+
+    /*
+    @Bean
+    protected JwtAccessTokenConverter jwtTokenEnhancer() {
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "mySecretKey".toCharArray());
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setKeyPair(keyStoreKeyFactory.getKeyPair("jwt"));
+        return converter;
+    }
+    */
 }
