@@ -2,10 +2,13 @@ package de.extremeenvironment.userservice.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import de.extremeenvironment.userservice.domain.Ngo;
+import de.extremeenvironment.userservice.domain.User;
 import de.extremeenvironment.userservice.repository.NgoRepository;
+import de.extremeenvironment.userservice.repository.UserRepository;
 import de.extremeenvironment.userservice.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +33,16 @@ public class NgoResource {
 
     @Inject
     private NgoRepository ngoRepository;
+
+    @Inject
+    private UserRepository userRepository;
+
+    @Autowired
+    public NgoResource(NgoRepository ngoRepository, UserRepository userRepository) {
+        this.ngoRepository=ngoRepository;
+        this.userRepository=userRepository;
+
+    }
 
     /**
      * POST  /ngos : Create a new ngo.
@@ -126,6 +139,71 @@ public class NgoResource {
         log.debug("REST request to delete Ngo : {}", id);
         ngoRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("ngo", id.toString())).build();
+    }
+
+    /**
+     * Insert a new User in the given Ngo
+     *
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value="/ngos/{ngoId}/{userId}",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Ngo> insertUser(@PathVariable Long ngoId,@PathVariable Long userId) {
+
+        System.out.println(userRepository==null);
+        Optional<User> user= userRepository.findOneById(userId);
+        if(user.get()!=null) {
+            Ngo ngo = ngoRepository.findOne(ngoId);
+            ngo.getUsers().add(user.get());
+            ngoRepository.saveAndFlush(ngo);
+            return Optional.ofNullable(ngo)
+                .map(result -> new ResponseEntity<>(
+                    result,
+                    HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } else {
+            return null;
+        }
+
+
+
+    }
+
+    /**
+     * Removes a new User in the given Ngo
+     *
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value="/ngos/{ngoId}/{userId}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Ngo> removeUser(@PathVariable Long ngoId,@PathVariable Long userId) {
+
+
+        Optional<User> user= userRepository.findOneById(userId);
+        if(user.get()!=null) {
+            System.out.println(user);
+            Ngo ngo = ngoRepository.findOne(ngoId);
+            ngo.getUsers().remove(user.get());
+            ngoRepository.saveAndFlush(ngo);
+            return Optional.ofNullable(ngo)
+                .map(result -> new ResponseEntity<>(
+                    result,
+                    HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } else {
+            return null;
+        }
+
+
+
     }
 
 }
